@@ -1,0 +1,636 @@
+/* ============================================ */
+/* @imports & Theme Variables                   */
+/* ============================================ */
+
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-blue-aqua: #1e40af;
+  --color-gold: #d4a017;
+  --color-gold-light: #f0d060;
+}
+
+/* ============================================ */
+/* Reset & Scrollbar                            */
+/* ============================================ */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* ============================================ */
+/* Loader                                       */
+/* ============================================ */
+
+@keyframes l21 {
+  50% {
+    box-shadow: 19px 0 0 3px, 38px 0 0 7px, 57px 0 0 3px;
+  }
+  100% {
+    box-shadow: 19px 0 0 0, 38px 0 0 3px, 57px 0 0 7px;
+  }
+}
+
+.loader {
+  width: 4px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 19px 0 0 7px, 38px 0 0 3px, 57px 0 0 0;
+  transform: translateX(-38px);
+  animation: l21 0.7s infinite alternate linear;
+}
+
+/* ============================================ */
+/* Float Animations - Fish & Elements           */
+/* ============================================ */
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-25px) translateX(15px) rotate(3deg);
+  }
+  66% {
+    transform: translateY(15px) translateX(-10px) rotate(-2deg);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) translateX(-15px) rotate(-3deg);
+  }
+  66% {
+    transform: translateY(10px) translateX(10px) rotate(2deg);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) translateX(5px) rotate(4deg);
+  }
+  66% {
+    transform: translateY(10px) translateX(-5px) rotate(-3deg);
+  }
+}
+
+@keyframes float-extreme-slow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(3px);
+  }
+}
+
+@keyframes float-very-slow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(6px) translateX(-4px);
+  }
+}
+
+@keyframes float-slow-alt {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-5px) translateX(2px);
+  }
+}
+
+@keyframes float-fast-small {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-12px) translateX(8px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(5px) translateX(-6px) rotate(-3deg);
+  }
+  75% {
+    transform: translateY(8px) translateX(4px) rotate(2deg);
+  }
+}
+
+@keyframes float-rapid-small {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-10px) translateX(12px) rotate(6deg);
+  }
+  40% {
+    transform: translateY(8px) translateX(-8px) rotate(-4deg);
+  }
+  60% {
+    transform: translateY(-6px) translateX(6px) rotate(3deg);
+  }
+  80% {
+    transform: translateY(10px) translateX(-10px) rotate(-5deg);
+  }
+}
+
+/* Float Animation Classes */
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 6s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 4s ease-in-out infinite;
+}
+
+.animate-float-extreme-slow {
+  animation: float-extreme-slow 12s ease-in-out infinite;
+}
+
+.animate-float-very-slow {
+  animation: float-very-slow 10s ease-in-out infinite;
+}
+
+.animate-float-slow-alt {
+  animation: float-slow-alt 6s ease-in-out infinite;
+}
+
+.animate-float-fast-small {
+  animation: float-fast-small 3s ease-in-out infinite;
+}
+
+.animate-float-rapid-small {
+  animation: float-rapid-small 2.5s ease-in-out infinite;
+}
+
+/* ============================================ */
+/* Backdrop & Glass Effect                      */
+/* ============================================ */
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+}
+
+/* ============================================ */
+/* Hero Title & Subtitle                        */
+/* ============================================ */
+
+.hero-title {
+  background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(96,165,250,0.08) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: blur(6px);
+  transform: scaleY(-0.3) translateY(18px);
+  opacity: 0.6;
+}
+
+.hero-subtitle {
+  position: relative;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.hero-subtitle::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #3B82F6, #FBBF24);
+  border-radius: 2px;
+}
+
+/* ============================================ */
+/* Buttons                                      */
+/* ============================================ */
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-secondary {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.dark .btn-secondary:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Golden Button */
+.golden-add-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.golden-add-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.golden-add-btn:hover::before {
+  left: 100%;
+}
+
+.golden-add-btn:active {
+  transform: scale(0.95);
+}
+
+.gold-glow:hover {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+/* ============================================ */
+/* Category Cards                               */
+/* ============================================ */
+
+.category-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  transition: all 0.3s ease;
+}
+
+.category-card:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.dark .category-card {
+  background: rgba(17, 24, 39, 0.7);
+  border-color: rgba(245, 158, 11, 0.1);
+}
+
+/* ============================================ */
+/* Section Title (HomeHeader)                   */
+/* ============================================ */
+
+.section-title {
+  position: relative;
+  background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #3B82F6 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+  letter-spacing: -0.3px;
+}
+
+.dark .section-title {
+  background: linear-gradient(135deg, #60A5FA 0%, #93C5FD 50%, #BFDBFE 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.section-title-accent {
+  background: linear-gradient(135deg, #0E7B7B 0%, #0F8B8B 50%, #14B8B8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+}
+
+.dark .section-title-accent {
+  background: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 50%, #0D9488 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Gradient line under section title */
+.gradient-title-line {
+  position: absolute;
+  bottom: -6px;
+  right: 0;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, #3B82F6, #FBBF24, #3B82F6);
+  border-radius: 2px;
+  animation: lineGlow 3s ease-in-out infinite;
+}
+
+@keyframes lineGlow {
+  0%, 100% {
+    width: 50%;
+    opacity: 0.6;
+  }
+  50% {
+    width: 70%;
+    opacity: 1;
+  }
+}
+
+/* Gradient border bottom for footer headings */
+.gradient-border-bottom {
+  position: relative;
+  display: inline-block;
+}
+
+.gradient-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, #3B82F6, #FBBF24, #3B82F6);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.gradient-border-bottom:hover::after {
+  width: 100%;
+}
+
+/* View All Link */
+.view-all-link {
+  position: relative;
+  padding: 4px 8px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.view-all-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(251, 191, 36, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.view-all-link:hover::before {
+  opacity: 1;
+}
+
+.view-all-link span,
+.view-all-link svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================ */
+/* Product Card Styles                          */
+/* ============================================ */
+
+.product-card {
+  position: relative;
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(245, 158, 11, 0.2), rgba(59, 130, 246, 0.3));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.product-card:hover::before {
+  opacity: 1;
+}
+
+.dark .product-card::before {
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.4), rgba(251, 191, 36, 0.3), rgba(96, 165, 250, 0.4));
+}
+
+/* Product Image */
+.product-image {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.group:hover .product-image {
+  filter: brightness(1.02);
+}
+
+/* Discount Badge */
+.discount-badge {
+  animation: badgePulse 2s ease-in-out infinite;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 2px 12px rgba(239, 68, 68, 0.5);
+  }
+}
+
+/* Product Title */
+.product-title {
+  position: relative;
+  display: inline-block;
+}
+
+.product-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #3B82F6, #FBBF24);
+  transition: width 0.3s ease;
+}
+
+.product-title:hover::after {
+  width: 100%;
+}
+
+/* Old Price */
+.old-price {
+  position: relative;
+  display: inline-block;
+}
+
+/* Final Price */
+.final-price {
+  position: relative;
+  display: inline-block;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .final-price {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================ */
+/* Input & Form Styles                          */
+/* ============================================ */
+
+.input-base {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.input-base:focus {
+  border-color: #3B82F6;
+  outline: none;
+  ring: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+.dark .input-base {
+  border-color: rgba(55, 65, 81, 0.5);
+  background-color: rgba(17, 24, 39, 0.5);
+}
+
+.input-error {
+  border-color: #EF4444;
+  background-color: rgba(254, 226, 226, 0.5);
+}
+
+.dark .input-error {
+  background-color: rgba(127, 29, 29, 0.2);
+}
+
+/* Form Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-animate {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Form Icon */
+.form-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(96, 165, 250, 0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================ */
+/* Utility Classes                              */
+/* ============================================ */
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Text shadow utility */
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-blue-gold {
+  background: linear-gradient(135deg, #1E3A8A, #3B82F6, #FBBF24);
+}
+
+.bg-gradient-gold-blue {
+  background: linear-gradient(135deg, #FBBF24, #3B82F6, #1E3A8A);
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background-size: 1000px 100%;
+}

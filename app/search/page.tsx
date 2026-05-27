@@ -83,7 +83,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <BoxHeader 
           title={`نتایج جستجو برای "${query}"`}
           majorCat="search"
-          isSearch
         />
         
         <p className="text-center text-sm text-gray-400 mt-2">

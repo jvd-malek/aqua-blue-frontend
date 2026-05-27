@@ -17,11 +17,22 @@ type SearchPageProps = {
 export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
   const { q } = await searchParams;
   const query = q ? decodeURIComponent(q) : '';
-  
+
+  if (!query) {
+    return {
+      title: 'جستجو',
+      robots: { index: false, follow: true },
+    };
+  }
+
   return {
-    title: query ? `نتایج جستجو برای "${query}" | Aqua Blue` : 'جستجو | Aqua Blue',
-    description: query ? `نتایج جستجو برای ${query} در فروشگاه Aqua Blue` : 'جستجوی محصولات و مقالات',
+    title: `نتایج جستجو برای "${query}"`,
+    description: `مشاهده نتایج جستجوی "${query}" در فروشگاه تخصصی ماهی و آکواریوم Aqua Blue`,
     robots: { index: false, follow: true },
+    openGraph: {
+      title: `نتایج جستجو برای "${query}"`,
+      description: `محصولات و مقالات مرتبط با ${query} در Aqua Blue`,
+    },
   };
 }
 

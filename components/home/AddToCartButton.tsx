@@ -3,7 +3,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { ShoppingBag, Minus, Plus } from 'lucide-react';
+import { ShoppingBag, Minus, Plus, Trash2 } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { notify } from '@/utils/notify';
 
@@ -91,7 +91,7 @@ export default function AddToCartButton({
             className="w-7 h-7 flex items-center justify-center text-white hover:bg-white/20 rounded-r-xl transition-colors"
             aria-label="کاهش تعداد"
           >
-            <Minus size={14} />
+            {currentCount === 1 ? <Trash2 size={14} /> : <Minus size={14} />}
           </button>
           <span className="text-white font-bold text-sm min-w-7 text-center">
             {currentCount}
@@ -129,7 +129,7 @@ export default function AddToCartButton({
           className="w-8 h-8 flex items-center justify-center text-white hover:bg-white/20 rounded-r-xl transition-colors"
           aria-label="کاهش تعداد"
         >
-          <Minus size={16} />
+          {currentCount === 1 ? <Trash2 size={16} /> : <Minus size={16} />}
         </button>
         <span className="text-white font-bold text-sm min-w-8 text-center">
           {currentCount}

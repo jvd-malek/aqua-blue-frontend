@@ -280,8 +280,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="fa"
       dir="rtl"
-      className={Baloo.variable}
+      className={`scroll-smooth select-none ${Baloo.variable}`}
       suppressHydrationWarning
+      data-scroll-behavior="smooth"
     >
       <head>
         <script
@@ -291,7 +292,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" href="/images/Logo-removebg.webp" as="image" type="image/webp" />
       </head>
 
-      <body className="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-[family-name:var(--font-Baloo)]">
+      <body className="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-[family-name:var(--font-Baloo)] scroll-smooth">
         <WaveBackground />
         <AppProvider>
           <main className="flex-1">{children}</main>

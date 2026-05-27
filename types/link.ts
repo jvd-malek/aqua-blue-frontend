@@ -10,8 +10,8 @@ export type LinkItem = {
   path: string;          // آدرس لینک
   sort: number[];        // آرایه اعداد برای ترتیب نمایش (از JSON.parse میاد)
   subLinks: string[];    // آرایه آیدی‌های زیرمنوها (از JSON.parse میاد)
-  createdAt: number;
-  updatedAt: number;
+  createdAt: string | number;  // تاریخ ایجاد (ممکنه از بک‌اند به صورت ISO string یا timestamp بیاد)
+  updatedAt: string | number;  // تاریخ بروزرسانی
 };
 
 /**

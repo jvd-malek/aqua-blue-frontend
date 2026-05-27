@@ -34,7 +34,7 @@ export default function HeroSection() {
       {/* محتوا */}
       <div className="relative z-20 px-4 flex flex-col md:items-center items-end w-full">
         <div className="mt-6 flex flex-col">
-          <h1 className="hero-title text-3xl md:text-center text-left md:text-5xl font-bold mb-4" data-text="AQUA BLUE">
+          <h1 className="hero-title text-3xl md:text-center text-left md:text-5xl font-extrabold font-sans p-1 mb-4" data-text="AQUA BLUE">
             AQUA BLUE
           </h1>
           <p className="hero-subtitle text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mx-auto whitespace-pre-wrap md:whitespace-normal">

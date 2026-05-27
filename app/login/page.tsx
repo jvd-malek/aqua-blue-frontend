@@ -6,10 +6,10 @@ import LoginForm from '@/components/login/LoginForm'
 import { LOGO } from '@/constants/home'
 
 export const metadata: Metadata = {
-  title: 'ورود به حساب کاربری | Aqua Blue',
+  title: 'ورود به حساب کاربری',
   description: 'ورود یا ثبت نام در فروشگاه Aqua Blue',
   robots: { index: false, follow: true },
-  alternates: { canonical: 'https://aquablue.ir/login' },
+  alternates: { canonical: 'https://aquablueiran.com/login' },
 }
 
 export default async function LoginPage(props: { searchParams?: Promise<Record<string, string>> }) {

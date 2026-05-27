@@ -27,9 +27,10 @@ export default function ArticleCard({ article }: Props) {
               alt={article.title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110"
+              loading='lazy'
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
+            <div className="w-full h-full bg-linear-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
               <span className="text-4xl">📄</span>
             </div>
           )}

@@ -2,6 +2,25 @@
 /* @imports & Theme Variables                   */
 /* ============================================ */
 
+/* جلوگیری از فاصله سفید در اسکرول موبایل */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  @apply bg-linear-to-b from-[#E8EEF6] to-[#D4E0F0] dark:from-[#0A0F1A] dark:to-[#111827];
+}
+
+/* اطمینان از اینکه کانواس کل صفحه رو پوشش میده */
+.fixed-custome {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 @import 'tailwindcss';
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -201,6 +220,11 @@ input[type="number"]::-webkit-outer-spin-button {
   color: transparent;
   position: relative;
   display: inline-block;
+}
+
+.font-mono {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+            "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }
 
 .hero-title::after {

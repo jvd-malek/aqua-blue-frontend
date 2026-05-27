@@ -23,19 +23,31 @@ const createTempId = () => `temp-${Date.now()}-${Math.random().toString(36).subs
 // API Functions
 // ============================================
 
+// stores/CartStore.tsx
+
 async function apiFetch<T>(
-  endpoint: string, 
+  endpoint: string,
   options?: { method?: string; body?: any }
 ): Promise<T | null> {
   try {
     const isDelete = options?.method === 'DELETE';
-    
-    const res = await fetch(`${API_URL}${endpoint}`, {
+    const hasBody = options?.body && !isDelete;
+
+    const fetchOptions: RequestInit = {
       credentials: 'include',
-      headers: !isDelete ? { 'Content-Type': 'application/json' } : undefined,
-      ...options,
-      body: options?.body ? JSON.stringify(options.body) : undefined,
-    });
+      method: options?.method || 'GET',
+    };
+
+    // فقط برای درخواست‌هایی که body دارن و DELETE نیستن
+    if (hasBody) {
+      fetchOptions.headers = { 'Content-Type': 'application/json' };
+      // اگر body از قبل string هست، دوباره stringify نکن
+      fetchOptions.body = typeof options.body === 'string'
+        ? options.body
+        : JSON.stringify(options.body);
+    }
+
+    const res = await fetch(`${API_URL}${endpoint}`, fetchOptions);
 
     const data = await res.json();
 
@@ -45,7 +57,8 @@ async function apiFetch<T>(
     }
 
     return data as T;
-  } catch {
+  } catch (error) {
+    console.error('API Fetch Error:', error);
     notify('خطا در ارتباط با سرور', 'error');
     return null;
   }
@@ -75,7 +88,7 @@ type CartStore = {
   isLoading: boolean;
   totalItems: number;
   totalPrice: number;
-  
+
   // Actions
   fetchCart: () => Promise<void>;
   addItem: (payload: AddToCartPayload) => Promise<void>;
@@ -102,7 +115,7 @@ export const useCartStore = create<CartStore>()(
       fetchCart: async () => {
         set({ isLoading: true });
         const data = await apiFetch<FetchCartResponse>('/user/cart');
-        
+
         if (data?.items) {
           set({
             items: data.items,
@@ -119,25 +132,22 @@ export const useCartStore = create<CartStore>()(
       syncLocalCartWithServer: async () => {
         const { items } = get();
         const tempItems = items.filter(i => i.cartId.startsWith('temp-'));
-        
+
         if (tempItems.length === 0) return;
-        
         set({ isLoading: true });
-        
+
         try {
-          // Check if user is logged in
           const meRes = await fetch(`${API_URL}/user/me`, {
             credentials: 'include',
           });
-          
+
           if (meRes.ok) {
-            // User is logged in - sync each temp item to server
             for (const item of tempItems) {
               const result = await apiFetch<AddToCartResponse>('/user/cart', {
                 method: 'POST',
                 body: JSON.stringify({ productId: item.productId, count: item.count }),
               });
-              
+
               if (result?.cartId) {
                 const updatedItems = get().items.map(i =>
                   i.cartId === item.cartId ? { ...i, cartId: result.cartId! } : i
@@ -149,12 +159,13 @@ export const useCartStore = create<CartStore>()(
                 });
               }
             }
-            
-            // Refresh cart from server after sync
+
             await get().fetchCart();
+          } else {
+            console.log('🟡 User not logged in, skipping sync');
           }
         } catch (error) {
-          console.error('Sync error:', error);
+          console.error('🔴 Sync error:', error);
         } finally {
           set({ isLoading: false });
         }
@@ -166,7 +177,7 @@ export const useCartStore = create<CartStore>()(
         const existing = items.find(i => i.productId === payload.productId);
 
         let newItems: CartItem[];
-        
+
         if (existing) {
           newItems = items.map(i =>
             i.productId === payload.productId
@@ -204,7 +215,7 @@ export const useCartStore = create<CartStore>()(
       removeItem: async (cartId) => {
         const { items } = get();
         const newItems = items.filter(i => i.cartId !== cartId);
-        
+
         set({
           items: newItems,
           totalItems: calculateTotalItems(newItems),
@@ -235,7 +246,7 @@ export const useCartStore = create<CartStore>()(
         const newItems = items.map(i =>
           i.cartId === cartId ? { ...i, count } : i
         );
-        
+
         set({
           items: newItems,
           totalItems: calculateTotalItems(newItems),

@@ -1,4 +1,3 @@
-// components/home/WaveBackgroundHome.tsx
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -282,7 +281,7 @@ const WaveBackgroundHome: React.FC<WaveBackgroundHomeProps> = ({ className = '' 
   return (
     <canvas
       ref={canvasRef}
-      className={`fixed top-0 left-0 w-full h-full pointer-events-none ${className}`}
+      className={`fixed-custome top-0 left-0 w-full h-full pointer-events-none ${className}`}
       style={{ zIndex: 1 }}
     />
   );

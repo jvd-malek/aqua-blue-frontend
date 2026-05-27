@@ -18,8 +18,9 @@ import CommentComplex from '@/components/product/CommentComplex';
 import { serverFetch } from '@/lib/server-fetch';
 import { Product } from '@/types';
 import ContentWithLinks from '@/components/link/ContentWithLinks';
+import Link from 'next/link';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3815/api';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://aquablueiran.com';
 
 async function getProduct(id: string) {
   const res = await serverFetch<Product>(`/products/${id}`, { cache: 'no-store' });
@@ -33,18 +34,95 @@ async function getLatestArticles(limit: number = 3) {
   return res.success ? res.data?.items || [] : [];
 }
 
+// app/product/[id]/page.tsx
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const product = await getProduct(id);
   if (!product) return { title: 'محصول | Aqua Blue' };
 
+  const productUrl = `${SITE_URL}/product/${id}`;
+  const imageUrl = product.cover
+    ? `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}/uploads/${product.cover}`
+    : `${SITE_URL}/og.webp`;
+
+  const currentTime = new Date();
+  const hasDiscount = product.discountPercent > 0 && (!product.discountExpireAt || new Date(product.discountExpireAt) > currentTime);
+  const finalPrice = hasDiscount
+    ? Math.round(product.price * (100 - product.discountPercent) / 100)
+    : product.price;
+
+  const brandName = product.brand || '';
+
   return {
-    title: `${product.title} | Aqua Blue`,
-    description: product.desc?.slice(0, 160),
+    title: `${product.title}`,
+    description: product.desc?.slice(0, 160) || `خرید ${product.title} از فروشگاه اینترنتی Aqua Blue با قیمت ${finalPrice.toLocaleString('fa-IR')} تومان و ارسال سریع به سراسر ایران`,
+    alternates: {
+      canonical: productUrl,
+      languages: {
+        'fa-IR': productUrl,
+      },
+    },
+    keywords: [
+      product.title,
+      product.majorCat,
+      product.minorCat,
+      brandName,
+      'خرید اینترنتی',
+      'قیمت',
+      'فروشگاه ماهی',
+      'آکواریوم',
+      ...(product.discountPercent > 0 ? ['تخفیف ویژه', 'حراج'] : []),
+    ].filter(Boolean),
+
+    robots: {
+      index: true,
+      follow: true,
+    },
+
     openGraph: {
+      title: `${product.title}`,
+      description: product.desc?.slice(0, 160) || `قیمت ${product.title} : ${finalPrice.toLocaleString('fa-IR')} تومان | ارسال سریع | ضمانت کیفیت`,
+      url: productUrl,
+      type: 'website',
+      siteName: 'Aqua Blue',
+      images: [
+        {
+          url: imageUrl,
+          width: 600,
+          height: 600,
+          alt: product.title,
+          type: 'image/webp',
+        },
+      ],
+      locale: 'fa_IR',
+      alternateLocale: 'en_US',
+    },
+
+    twitter: {
+      card: 'summary_large_image',
       title: `${product.title} | Aqua Blue`,
-      description: product.desc?.slice(0, 160),
-      images: product.cover ? [`${API_URL.replace('/api', '')}/uploads/${product.cover}`] : [],
+      description: product.desc?.slice(0, 140),
+      images: [imageUrl],
+      site: '@aquablueiran',
+      creator: '@aquablueiran',
+    },
+
+    other: {
+      'product_id': product.id,
+      'product_name': product.title,
+      'product_price': finalPrice.toString(),
+      'product_status': product.condition,
+      'product_old_price': product.price.toString(),
+      'availability': product.showCount > 0 ? 'instock' : 'outofstock',
+      'product:price:amount': finalPrice.toString(),
+      'product:price:currency': 'IRR',
+      'product:availability': product.showCount > 0 ? 'in stock' : 'out of stock',
+      'product:retailer_item_id': product.id,
+      'product:original_price': product.price.toString(),
+      'product:discount_percent': hasDiscount ? product.discountPercent?.toString() : '0',
+      'og:image': imageUrl,
+      'twitter:image': imageUrl,
     },
   };
 }
@@ -199,12 +277,12 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
               <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">مقالات مرتبط</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {latestArticles.map((article: any) => (
-                  <a key={article.id} href={`/blog/${article.id}`} className="group block p-4 rounded-xl bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all hover:scale-105">
+                  <Link key={article.id} href={`/article/${article.id}`} className="group block p-4 rounded-xl bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all hover:scale-105">
                     <h4 className="font-medium text-gray-800 dark:text-gray-200 group-hover:text-blue-600 transition-colors line-clamp-2">
                       {article.title}
                     </h4>
                     <p className="text-xs text-gray-500 mt-2 line-clamp-2">{article.desc}</p>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

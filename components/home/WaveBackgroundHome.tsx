@@ -44,9 +44,25 @@ const WaveBackgroundHome: React.FC<WaveBackgroundHomeProps> = ({ className = '' 
     };
     
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initSchools();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const oldW = canvas.width || w;
+      const oldH = canvas.height || h;
+
+      canvas.width = w;
+      canvas.height = h;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+
+      // فقط scale کن، ری‌اینییت نکن
+      if (schools.length > 0) {
+        schools.forEach(s => {
+          s.x = (s.x / oldW) * w;
+          s.y = (s.y / oldH) * h;
+        });
+      } else {
+        initSchools();
+      }
     };
     
     const initSchools = () => {
@@ -249,8 +265,14 @@ const WaveBackgroundHome: React.FC<WaveBackgroundHomeProps> = ({ className = '' 
       animationId = requestAnimationFrame(animate);
     };
     
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 100);
+    };
+
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', debouncedResize);
     animate();
     
     const observer = new MutationObserver(() => {
@@ -272,7 +294,8 @@ const WaveBackgroundHome: React.FC<WaveBackgroundHomeProps> = ({ className = '' 
     });
     
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(resizeTimer);
       observer.disconnect();
       if (animationId) cancelAnimationFrame(animationId);
     };

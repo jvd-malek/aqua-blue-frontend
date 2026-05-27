@@ -6,19 +6,17 @@
 html, body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   @apply bg-linear-to-b from-[#E8EEF6] to-[#D4E0F0] dark:from-[#0A0F1A] dark:to-[#111827];
 }
 
-/* اطمینان از اینکه کانواس کل صفحه رو پوشش میده */
+/* کانواس موقعیت ثابت — ابعاد توسط JS ست میشه */
 .fixed-custome {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+  pointer-events: none;
 }
 
 @import 'tailwindcss';

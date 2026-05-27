@@ -36,8 +36,14 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
     };
     
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      // فقط موقعی که واقعاً تغییر کرده اعمال کن
+      if (canvas.width === w && canvas.height === h) return;
+      canvas.width = w;
+      canvas.height = h;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
     };
     
     const drawWave = (
@@ -221,8 +227,14 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
       animationId = requestAnimationFrame(animate);
     };
     
+    let resizeTimer: ReturnType<typeof setTimeout>;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resizeCanvas, 100);
+    };
+
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', debouncedResize);
     animate();
     
     const observer = new MutationObserver(() => {});
@@ -232,7 +244,8 @@ const WaveBackground: React.FC<WaveBackgroundProps> = ({ className = '' }) => {
     });
     
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(resizeTimer);
       observer.disconnect();
       if (animationId) cancelAnimationFrame(animationId);
     };
